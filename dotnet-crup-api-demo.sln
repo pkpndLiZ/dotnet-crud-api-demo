@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1706.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-crup-api-demo", "dotnet-crup-api-demo\dotnet-crup-api-demo.csproj", "{05D59F73-3B5D-4872-B0AF-2D3172153771}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{05D59F73-3B5D-4872-B0AF-2D3172153771}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05D59F73-3B5D-4872-B0AF-2D3172153771}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05D59F73-3B5D-4872-B0AF-2D3172153771}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05D59F73-3B5D-4872-B0AF-2D3172153771}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B5B5EAF5-14B7-4E5E-B091-DB48E93841A6}
+	EndGlobalSection
+EndGlobal

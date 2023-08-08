@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "nxIvyYjK0Cr0xQYbRycld2uKX+wBLtLP4+X20BgD7E0=",
+  "Source": "dotnet-crup-api-demo",
+  "BasePath": "_content/dotnet-crup-api-demo",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

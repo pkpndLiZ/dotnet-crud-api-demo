@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/dotnet-crup-api-demo.props" />
+</Project>
