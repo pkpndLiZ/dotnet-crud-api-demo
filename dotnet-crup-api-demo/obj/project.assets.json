@@ -1006,25 +1006,27 @@
     ]
   },
   "packageFolders": {
-    "/Users/phanida.lip/.nuget/packages/": {}
+    "C:\\Users\\phanida.l\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/phanida.lip/Projects/dotnet-crup-api-demo/dotnet-crup-api-demo/dotnet-crup-api-demo.csproj",
+      "projectUniqueName": "C:\\Users\\phanida.l\\source\\practice\\repos\\dotnet-crup-api-demo\\dotnet-crup-api-demo.csproj",
       "projectName": "dotnet-crup-api-demo",
-      "projectPath": "/Users/phanida.lip/Projects/dotnet-crup-api-demo/dotnet-crup-api-demo/dotnet-crup-api-demo.csproj",
-      "packagesPath": "/Users/phanida.lip/.nuget/packages/",
-      "outputPath": "/Users/phanida.lip/Projects/dotnet-crup-api-demo/dotnet-crup-api-demo/obj/",
+      "projectPath": "C:\\Users\\phanida.l\\source\\practice\\repos\\dotnet-crup-api-demo\\dotnet-crup-api-demo.csproj",
+      "packagesPath": "C:\\Users\\phanida.l\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\phanida.l\\source\\practice\\repos\\dotnet-crup-api-demo\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/phanida.lip/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\phanida.l\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/sdk/7.0.306/Sdks/Microsoft.NET.Sdk.Web/library-packs": {},
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1075,7 +1077,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.306/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
       }
     }
   }

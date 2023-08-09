@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dotnet_crup_api_demo.Models;
+using dotnet_crup_api_demo.Services.CustomerService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,54 +14,70 @@ namespace dotnet_crup_api_demo.Controllers
     [Route("api/[controller]")]
     public class CustomersController : Controller
     {
-        private readonly ApiDbContext _context;
+    
+        private readonly ICustomerService _customerService;
 
-        public CustomersController(ApiDbContext context)
+        public CustomersController(ICustomerService customerService)
         {
-            _context = context;
+            _customerService = customerService;
         }
 
-        // GET: api/values
+        // GET: api/customers
         [HttpGet]
-        public async Task<IActionResult> GetCustomers()
+        public IActionResult GetCustomers()
         {
-            return Ok(_context.Customers.ToList());
+            return Ok(_customerService.GetAllCustomers());
         }
 
-        //GET api/values/5
+        //GET api/customers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Customer>> GetCustomerById(int id)
         {
-            var customer = _context.Customers.Find(id); 
-
-            if (customer == null)
+            try
             {
-                return NotFound();
+                var customer = await _customerService.GetCustomerById(id);
+                return Ok(customer);                
+
+            }catch (Exception ex)
+            {
+                return NotFound(ex.Message);
             }
-            return Ok(customer);
         }
 
-        // POST api/values
+        // POST api/customers
         [HttpPost]
-        public async Task<ActionResult<Customer>> PostCustomer([FromBody] Customer customer)
+        public async Task<ActionResult<Customer>> AddCustomer([FromBody] Customer customer)
         {
-            _context.Customers.Add(customer);
-            await _context.SaveChangesAsync();
-
-            //return CreatedAtAction("GetCustomer", new { id = customer.ID }, customer);
-            return Ok("ok");
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCustomer(int id, [FromBody]Customer customer)
-        {
-            
-            _context.Entry(customer).State = EntityState.Modified;
+            // _context.Customers.Add(customer);
+            // await _context.SaveChangesAsync();
 
             try
             {
-                 _context.SaveChangesAsync();
+                await _customerService.AddCustomer(customer);
+                return CreatedAtAction(nameof(GetCustomerById), new { id = customer.ID}, customer);
+
+            }catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+         
+
+            // return Ok("ok");
+        }
+
+        // PUT api/customers/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCustomer(int id, [FromBody] Customer customer)
+        {
+
+            // _context.Entry(customer).State = EntityState.Modified;
+
+            customer.ID = id;
+            _context.Customers.Update(customer);
+
+            try
+            {
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException e)
             {
@@ -77,7 +94,7 @@ namespace dotnet_crup_api_demo.Controllers
             return NoContent(); //204 No Content
         }
 
-        // DELETE api/values/5
+        // DELETE api/customers/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer(int id)
         {

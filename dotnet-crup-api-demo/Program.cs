@@ -1,5 +1,6 @@
 ﻿
 using dotnet_crup_api_demo.Models;
+using dotnet_crup_api_demo.Services.CustomerService;
 
 namespace dotnet_crup_api_demo;
 
@@ -16,6 +17,8 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddDbContext<ApiDbContext>();
         builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+        builder.Services.AddScoped<ICustomerService, CustomerService>();
+
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
