@@ -1,4 +1,6 @@
-﻿using dotnet_crup_api_demo.Models;
+﻿using AutoMapper;
+using dotnet_crup_api_demo.Dtos.CustomerDto;
+using dotnet_crup_api_demo.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,10 +11,12 @@ namespace dotnet_crup_api_demo.Services.CustomerService
     public class CustomerService : ICustomerService
     {
         private readonly ApiDbContext _context;
+        private readonly IMapper _mapper;
 
-        public CustomerService(ApiDbContext context)
+        public CustomerService(ApiDbContext context,IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<bool> AddCustomer(Customer newCustomer)
@@ -30,23 +34,28 @@ namespace dotnet_crup_api_demo.Services.CustomerService
                        
         }       
 
-        public List<Customer> GetAllCustomers()
+        public List<GetCustomerDto> GetAllCustomers()
         {
-            return _context.Customers.ToList();
+            List<GetCustomerDto> customers = _mapper.Map<List<GetCustomerDto>>(_context.Customers.ToList());
+            return customers;
         }
 
-        public async Task<Customer> GetCustomerById(int id)
+        public async Task<GetCustomerDto> GetCustomerById(int id)
         {
             var customer = await _context.Customers.FindAsync(id);
 
         
-            if(customer is not null)          
-                return customer;
+            if(customer is not null)
+            {
+                GetCustomerDto customerDto = _mapper.Map<GetCustomerDto>(customer);
+                return customerDto;
+            }
+               
 
             throw new Exception("Customer not found.");
         }
 
-        public async Task<Customer> UpdateCustomer(int id, Customer customer)
+        public async Task<GetCustomerDto> UpdateCustomer(int id, Customer customer)
         {
             customer.ID = id;
             _context.Customers.Update(customer);
@@ -54,24 +63,41 @@ namespace dotnet_crup_api_demo.Services.CustomerService
             try
             {
                 await _context.SaveChangesAsync();
-                return customer;
+                GetCustomerDto customerDto = _mapper.Map<GetCustomerDto>(customer);
+                return customerDto;
             }
-            catch (DbUpdateConcurrencyException e)
+            catch
             {
                 if (_context.Customers.Find(id) == null)
                 {
-                    throw new Exception("Customer not found.");
+                    throw new Exception("Customer not found");
                 }
                 else
                 {
-                    throw e;
+                    throw;
                 }
             }
         }
 
-        public Task<bool> DeleteCustomer(int id)
+        public async Task<bool> DeleteCustomer(int id)
         {
-            throw new NotImplementedException();
+            var customer = await _context.Customers.FindAsync(id);           
+
+            try
+            {
+                if (customer == null)
+                {
+                    throw new Exception("customer not found");
+                }
+
+                _context.Customers.Remove(customer);
+                await _context.SaveChangesAsync();
+                return true;
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }                      
+
         }
 
         /* public async Task<List<Customer>> AddCustomer(Customer newCustomer)

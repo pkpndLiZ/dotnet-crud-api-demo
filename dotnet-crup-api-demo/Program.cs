@@ -17,8 +17,9 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddDbContext<ApiDbContext>();
         builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-        builder.Services.AddScoped<ICustomerService, CustomerService>();
+        builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
+        builder.Services.AddScoped<ICustomerService, CustomerService>();
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();

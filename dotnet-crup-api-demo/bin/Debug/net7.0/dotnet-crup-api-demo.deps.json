@@ -9,6 +9,7 @@
       "dotnet-crup-api-demo/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.OpenApi": "7.0.9",
+          "Microsoft.EntityFrameworkCore": "7.0.10",
           "Microsoft.EntityFrameworkCore.InMemory": "7.0.10",
           "Swashbuckle.AspNetCore": "6.5.0"
         },

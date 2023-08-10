@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using dotnet_crup_api_demo.Models;
 using dotnet_crup_api_demo.Services.CustomerService;
+using dotnet_crup_api_demo.Dtos.CustomerDto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,10 +18,12 @@ namespace dotnet_crup_api_demo.Controllers
     {
     
         private readonly ICustomerService _customerService;
+        private readonly IMapper _mapper;
 
-        public CustomersController(ICustomerService customerService)
+        public CustomersController(ICustomerService customerService,IMapper mapper)
         {
             _customerService = customerService;
+            _mapper = mapper;
         }
 
         // GET: api/customers
@@ -36,6 +40,7 @@ namespace dotnet_crup_api_demo.Controllers
             try
             {
                 var customer = await _customerService.GetCustomerById(id);
+
                 return Ok(customer);                
 
             }catch (Exception ex)
@@ -46,68 +51,79 @@ namespace dotnet_crup_api_demo.Controllers
 
         // POST api/customers
         [HttpPost]
-        public async Task<ActionResult<Customer>> AddCustomer([FromBody] Customer customer)
+        public async Task<ActionResult<Customer>> AddCustomer([FromBody] CreateCustomerDto customerDto)
         {
-            // _context.Customers.Add(customer);
-            // await _context.SaveChangesAsync();
+          
+
+            if (!ModelState.IsValid)
+            {
+                
+                return BadRequest(ModelState);
+            }
 
             try
             {
+                Customer customer = _mapper.Map<Customer>(customerDto);
                 await _customerService.AddCustomer(customer);
-                return CreatedAtAction(nameof(GetCustomerById), new { id = customer.ID}, customer);
+                return CreatedAtAction(nameof(GetCustomerById), new { id = customer.ID }, customer);
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
             }
-         
+
 
             // return Ok("ok");
         }
 
         // PUT api/customers/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCustomer(int id, [FromBody] Customer customer)
+        public async Task<IActionResult> UpdateCustomer(int id, [FromBody] UpdateCustomerDto customerDto)
         {
 
             // _context.Entry(customer).State = EntityState.Modified;
 
-            customer.ID = id;
-            _context.Customers.Update(customer);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
 
             try
             {
-                await _context.SaveChangesAsync();
+                Customer customer = _mapper.Map<Customer>(customerDto);
+                await _customerService.UpdateCustomer(id, customer);
+                return Ok(customer);
             }
-            catch (DbUpdateConcurrencyException e)
+            catch (Exception ex)
             {
-                if (_context.Customers.Find(id) == null)
+                if (ex.Message == "Customer not found") 
                 {
                     return NotFound();
                 }
                 else
                 {
-                    throw e;
+                    return StatusCode(StatusCodes.Status404NotFound, new { message = ex.Message });
                 }
             }
-
-            return NoContent(); //204 No Content
+            
         }
 
         // DELETE api/customers/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer(int id)
         {
-            var student = await _context.Customers.FindAsync(id);
-            if (student == null)
+            try
             {
-                return NotFound();
+                await _customerService.DeleteCustomer(id);
+                return Ok();
             }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new { message = ex.Message });
+            }                                    
 
-            _context.Customers.Remove(student);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
     }
 }
